@@ -221,9 +221,12 @@ async function loadTicker(){
     const fx = await fetch('https://api.exchangerate-api.com/v4/latest/EUR');
     const fxData = await fx.json();
     
-    // Crypto rates
-    const crypto = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin&vs_currencies=usd&include_24hr_change=true');
+    // Crypto + Gold rates
+    const crypto = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,binancecoin,gold&vs_currencies=usd&include_24hr_change=true');
     const cryptoData = await crypto.json();
+
+    // Oil price
+    const oil = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=tether&vs_currencies=usd');
     
     const rates = fxData.rates;
     const usd = rates.USD?.toFixed(4) || '1.08';
@@ -232,6 +235,7 @@ async function loadTicker(){
     const aed = rates.AED?.toFixed(4) || '3.97';
     const try_ = rates.TRY?.toFixed(2) || '34.5';
     const syp = rates.SYP?.toFixed(0) || '13500';
+    const jod = rates.JOD?.toFixed(4) || '0.77';
     
     const btc = cryptoData.bitcoin?.usd?.toLocaleString() || '67,000';
     const btcChg = cryptoData.bitcoin?.usd_24h_change?.toFixed(2) || '0';
@@ -239,12 +243,24 @@ async function loadTicker(){
     const ethChg = cryptoData.ethereum?.usd_24h_change?.toFixed(2) || '0';
     const bnb = cryptoData.binancecoin?.usd?.toFixed(0) || '580';
 
+    // Gold from metals API
+    let goldPrice = '3,200';
+    let oilPrice = '78.50';
+    try {
+      const metalsRes = await fetch('https://api.metals.live/v1/spot/gold,oil');
+      const metalsData = await metalsRes.json();
+      goldPrice = metalsData[0]?.price?.toFixed(2) || '3,200';
+      oilPrice = metalsData[1]?.price?.toFixed(2) || '78.50';
+    } catch(e) {}
+
     const btcClass = btcChg >= 0 ? 'ticker-up' : 'ticker-down';
     const ethClass = ethChg >= 0 ? 'ticker-up' : 'ticker-down';
     const btcArrow = btcChg >= 0 ? '▲' : '▼';
     const ethArrow = ethChg >= 0 ? '▲' : '▼';
 
-    const html = `
+    const items = `
+      <span class="ticker-item">🥇 <span class="ticker-label">GOLD</span>$${goldPrice}/oz</span>
+      <span class="ticker-item">🛢️ <span class="ticker-label">OIL</span>$${oilPrice}/bbl</span>
       <span class="ticker-item">🟡 <span class="ticker-label">BTC/USD</span><span class="${btcClass}">${btcArrow} $${btc} (${btcChg}%)</span></span>
       <span class="ticker-item">🔵 <span class="ticker-label">ETH/USD</span><span class="${ethClass}">${ethArrow} $${eth} (${ethChg}%)</span></span>
       <span class="ticker-item">⚪ <span class="ticker-label">BNB/USD</span>$${bnb}</span>
@@ -253,19 +269,11 @@ async function loadTicker(){
       <span class="ticker-item">🇸🇦 <span class="ticker-label">EUR/SAR</span>${sar}</span>
       <span class="ticker-item">🇦🇪 <span class="ticker-label">EUR/AED</span>${aed}</span>
       <span class="ticker-item">🇹🇷 <span class="ticker-label">EUR/TRY</span>${try_}</span>
-      <span class="ticker-item">🇸🇾 <span class="ticker-label">EUR/SYP</span>${syp}</span>
-      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-      <span class="ticker-item">🟡 <span class="ticker-label">BTC/USD</span><span class="${btcClass}">${btcArrow} $${btc} (${btcChg}%)</span></span>
-      <span class="ticker-item">🔵 <span class="ticker-label">ETH/USD</span><span class="${ethClass}">${ethArrow} $${eth} (${ethChg}%)</span></span>
-      <span class="ticker-item">⚪ <span class="ticker-label">BNB/USD</span>$${bnb}</span>
-      <span class="ticker-item">💵 <span class="ticker-label">EUR/USD</span>${usd}</span>
-      <span class="ticker-item">💷 <span class="ticker-label">EUR/GBP</span>${gbp}</span>
-      <span class="ticker-item">🇸🇦 <span class="ticker-label">EUR/SAR</span>${sar}</span>
-      <span class="ticker-item">🇦🇪 <span class="ticker-label">EUR/AED</span>${aed}</span>
-      <span class="ticker-item">🇹🇷 <span class="ticker-label">EUR/TRY</span>${try_}</span>
-      <span class="ticker-item">🇸🇾 <span class="ticker-label">EUR/SYP</span>${syp}</span>
+      <span class="ticker-item">🌙 <span class="ticker-label">EUR/SYP</span>${syp}</span>
+      <span class="ticker-item">🇯🇴 <span class="ticker-label">EUR/JOD</span>${jod}</span>
     `;
-    document.getElementById('ticker-content').innerHTML = html;
+    document.getElementById('ticker-content').innerHTML = items + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + items;
+    // done
   } catch(e) {
     document.getElementById('ticker-content').innerHTML = '<span style="color:#888;margin:0 20px">Live rates unavailable — check your connection</span>';
   }
