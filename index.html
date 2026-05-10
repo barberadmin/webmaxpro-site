@@ -259,18 +259,18 @@ async function loadTicker(){
     const ethArrow = ethChg >= 0 ? '▲' : '▼';
 
     const items = `
-      <span class="ticker-item">🥇 <span class="ticker-label">GOLD</span>$${goldPrice}/oz</span>
-      <span class="ticker-item">🛢️ <span class="ticker-label">OIL</span>$${oilPrice}/bbl</span>
-      <span class="ticker-item">🟡 <span class="ticker-label">BTC/USD</span><span class="${btcClass}">${btcArrow} $${btc} (${btcChg}%)</span></span>
-      <span class="ticker-item">🔵 <span class="ticker-label">ETH/USD</span><span class="${ethClass}">${ethArrow} $${eth} (${ethChg}%)</span></span>
-      <span class="ticker-item">⚪ <span class="ticker-label">BNB/USD</span>$${bnb}</span>
-      <span class="ticker-item">💵 <span class="ticker-label">EUR/USD</span>${usd}</span>
-      <span class="ticker-item">💷 <span class="ticker-label">EUR/GBP</span>${gbp}</span>
-      <span class="ticker-item">🇸🇦 <span class="ticker-label">EUR/SAR</span>${sar}</span>
-      <span class="ticker-item">🇦🇪 <span class="ticker-label">EUR/AED</span>${aed}</span>
-      <span class="ticker-item">🇹🇷 <span class="ticker-label">EUR/TRY</span>${try_}</span>
-      <span class="ticker-item">🌙 <span class="ticker-label">EUR/SYP</span>${syp}</span>
-      <span class="ticker-item">🇯🇴 <span class="ticker-label">EUR/JOD</span>${jod}</span>
+      <span class="ticker-item"><span class="ticker-label">GOLD</span>$${goldPrice}/oz</span>
+      <span class="ticker-item"><span class="ticker-label">OIL</span>$${oilPrice}/bbl</span>
+      <span class="ticker-item"><span class="ticker-label">BTC/USD</span><span class="${btcClass}">${btcArrow} $${btc} (${btcChg}%)</span></span>
+      <span class="ticker-item"><span class="ticker-label">ETH/USD</span><span class="${ethClass}">${ethArrow} $${eth} (${ethChg}%)</span></span>
+      <span class="ticker-item"><span class="ticker-label">BNB/USD</span>$${bnb}</span>
+      <span class="ticker-item"><span class="ticker-label">EUR/USD</span>${usd}</span>
+      <span class="ticker-item"><span class="ticker-label">EUR/GBP</span>${gbp}</span>
+      <span class="ticker-item"><span class="ticker-label">EUR/SAR</span>${sar}</span>
+      <span class="ticker-item"><span class="ticker-label">EUR/AED</span>${aed}</span>
+      <span class="ticker-item"><span class="ticker-label">EUR/TRY</span>${try_}</span>
+      <span class="ticker-item"><span class="ticker-label">EUR/SYP</span>${syp}</span>
+      <span class="ticker-item"><span class="ticker-label">EUR/JOD</span>${jod}</span>
     `;
     document.getElementById('ticker-content').innerHTML = items + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + items;
     // done
