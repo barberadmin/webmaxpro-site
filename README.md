@@ -30,6 +30,7 @@
 ## 📞 Contact Us
 - 🌐 [webmaxpro.com](https://webmaxpro.com)
 - 💬 [WhatsApp](https://wa.me/32495345140)
+- 📧 [hajjarhuosam@gmail.com](mailto:hajjarhuosam@gmail.com)
 - 📧 info@webmaxpro.com
 
 ## 👨‍💻 Developer
